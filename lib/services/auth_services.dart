@@ -20,6 +20,18 @@ class AuthServices {
       return SignInSingUpResult(massage: e.toString());
     }
   }
+
+  static Future<SignInSingUpResult> signIn(String email, String password) async {
+    try {
+      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      User user = await result.user.fromFireStore();
+
+      return SignInSingUpResult(user: user);
+    } catch (e) {
+      return SignInSingUpResult(massage: e.toString().split(',')[1]);
+    }
+  }
 }
 
 class SignInSingUpResult {
